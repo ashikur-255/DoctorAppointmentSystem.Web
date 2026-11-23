@@ -63,6 +63,26 @@ using (var scope = app.Services.CreateScope())
                 roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
             }
         }
+
+        // Seed Admin user
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+        var adminEmail = "admin@gmail.com";
+        var adminUser = userManager.FindByEmailAsync(adminEmail).GetAwaiter().GetResult();
+        if (adminUser == null)
+        {
+            adminUser = new ApplicationUser
+            {
+                UserName = adminEmail,
+                Email = adminEmail,
+                EmailConfirmed = true,
+                PhoneNumber = "01700000000"
+            };
+            var createResult = userManager.CreateAsync(adminUser, "Admin@123").GetAwaiter().GetResult();
+            if (createResult.Succeeded)
+            {
+                userManager.AddToRoleAsync(adminUser, "Admin").GetAwaiter().GetResult();
+            }
+        }
     }
     catch (Exception ex)
     {
