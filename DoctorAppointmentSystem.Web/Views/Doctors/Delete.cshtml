@@ -13,7 +13,8 @@
             <div class="col-md-4 text-center">
                 @if (!string.IsNullOrEmpty(Model.ImagePath))
                 {
-                    <img src="@Url.Content(Model.ImagePath)" class="img-fluid img-thumbnail mb-3" alt="Doctor Photo" />
+                    <img src="@Url.Content(Model.ImagePath)" class="img-fluid img-thumbnail mb-3" alt="Doctor Photo"
+                         onerror="this.onerror=null;this.src='/Images/Doctors/default.png';" />
                 }
                 else
                 {

@@ -14,18 +14,11 @@
 
             <!-- Doctor Image -->
             <div class="col-md-4 text-center">
-                @if (!string.IsNullOrEmpty(Model.ImagePath))
-                {
-                    <img src="@Url.Content(Model.ImagePath)"
-                         class="img-fluid img-thumbnail mb-3 rounded shadow-sm"
-                         alt="Doctor Photo" />
-                }
-                else
-                {
-                    <img src="~/Images/placeholder-doctor.png"
-                         class="img-fluid img-thumbnail mb-3 rounded shadow-sm"
-                         alt="Doctor Photo" />
-                }
+                <img src="@(!string.IsNullOrEmpty(Model.ImagePath) ? Url.Content(Model.ImagePath) : "/Images/Doctors/default.png")"
+                     class="img-fluid img-thumbnail mb-3 rounded shadow-sm"
+                     style="max-height:280px;object-fit:cover;"
+                     alt="@Model.Name"
+                     onerror="this.onerror=null;this.src='/Images/Doctors/default.png';" />
             </div>
 
             <!-- Doctor Info -->

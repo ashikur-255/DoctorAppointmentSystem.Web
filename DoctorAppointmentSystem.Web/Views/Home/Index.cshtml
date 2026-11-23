@@ -81,7 +81,9 @@
                     <div class="card-body">
 
                         <img src="@(!string.IsNullOrEmpty(doctor.ImagePath)?Url.Content(doctor.ImagePath):Url.Content("~/Images/Doctors/default.png"))"
-                             class="doctor-img mb-3">
+                             class="doctor-img mb-3"
+                             alt="@doctor.Name"
+                             onerror="this.onerror=null;this.src='/Images/Doctors/default.png';">
 
                         <h5 class="fw-bold">@doctor.Name</h5>
 

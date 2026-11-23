@@ -162,7 +162,9 @@
                                         ? Url.Content(doctor.ImagePath)
                                         : Url.Content("~/Images/Doctors/default.png"))"
                                              class="rounded-circle border shadow-sm"
-                                             style="width:60px;height:60px;object-fit:cover" />
+                                             style="width:60px;height:60px;object-fit:cover"
+                                             alt="@doctor.Name"
+                                             onerror="this.onerror=null;this.src='/Images/Doctors/default.png';" />
                                     </td>
 
                                     <td class="fw-bold text-primary">

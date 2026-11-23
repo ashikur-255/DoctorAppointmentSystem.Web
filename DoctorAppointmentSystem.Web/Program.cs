@@ -83,6 +83,56 @@ using (var scope = app.Services.CreateScope())
                 userManager.AddToRoleAsync(adminUser, "Admin").GetAwaiter().GetResult();
             }
         }
+
+        // Verify and heal doctor image paths
+        try
+        {
+            var doctors = db.Doctors.ToList();
+            var webRoot = app.Environment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            var doctorImgDir = Path.Combine(webRoot, "Images", "Doctors");
+            if (Directory.Exists(doctorImgDir))
+            {
+                var existingFiles = Directory.GetFiles(doctorImgDir, "*.png")
+                    .Select(Path.GetFileName)
+                    .Where(f => !f.Equals("default.png", StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                if (existingFiles.Any())
+                {
+                    int imgIdx = 0;
+                    bool updated = false;
+                    foreach (var doctor in doctors)
+                    {
+                        bool fileExists = false;
+                        if (!string.IsNullOrEmpty(doctor.ImagePath))
+                        {
+                            var fn = Path.GetFileName(doctor.ImagePath);
+                            if (File.Exists(Path.Combine(doctorImgDir, fn)))
+                            {
+                                fileExists = true;
+                            }
+                        }
+
+                        if (!fileExists)
+                        {
+                            doctor.ImagePath = "/Images/Doctors/" + existingFiles[imgIdx % existingFiles.Count];
+                            imgIdx++;
+                            updated = true;
+                        }
+                    }
+
+                    if (updated)
+                    {
+                        db.SaveChanges();
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            logger.LogWarning(ex, "Could not verify doctor images.");
+        }
     }
     catch (Exception ex)
     {
