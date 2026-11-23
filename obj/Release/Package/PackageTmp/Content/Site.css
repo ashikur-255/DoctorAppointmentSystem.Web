@@ -1,0 +1,106 @@
+﻿/* Set padding to keep content from hitting the edges */
+.body-content {
+    margin-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* Footer Design */
+
+.footer-section {
+    background: #1b263b; /* হালকা নেভি ব্লু */
+    color: #e0e1dd; /* হালকা অফ-হোয়াইট বা প্লাটিনাম */
+    padding: 50px 0;
+}
+
+    .footer-section h4 {
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    .footer-section p {
+        color: #dcdcdc;
+    }
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+    .footer-links li {
+        margin-bottom: 10px;
+    }
+
+    .footer-links a {
+        color: #dcdcdc;
+        text-decoration: none;
+    }
+
+        .footer-links a:hover {
+            color: #4cc9f0;
+        }
+
+.social-icons a {
+    color: white;
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+    .social-icons a:hover {
+        color: #4cc9f0;
+    }
+
+.footer-section hr {
+    background: #888;
+}
+
+/* Back to top button */
+
+#topBtn {
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    z-index: 99;
+    border: none;
+    outline: none;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    padding: 12px 15px;
+    border-radius: 50%;
+    font-size: 20px;
+}
+
+    #topBtn:hover {
+        background: #0056b3;
+    }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
