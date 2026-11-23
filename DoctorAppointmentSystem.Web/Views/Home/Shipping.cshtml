@@ -1,0 +1,41 @@
+@{
+    ViewBag.Title = "Shipping & Delivery Information";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Shipping Info</li>
+                </ol>
+            </nav>
+
+            <div class="card shadow-sm border-0 rounded-4 p-4 p-md-5">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-info bg-opacity-10 text-info p-3 rounded-circle me-3">
+                        <i class="bi bi-truck fs-2 text-primary"></i>
+                    </div>
+                    <div>
+                        <h2 class="fw-bold mb-1">Prescription & Diagnostic Shipping Info</h2>
+                        <p class="text-muted mb-0">Delivery of digital prescriptions & partner medical reports</p>
+                    </div>
+                </div>
+
+                <hr class="my-4 text-muted" />
+
+                <div class="content text-secondary lh-lg">
+                    <h5 class="fw-bold text-dark"><i class="bi bi-file-earmark-medical text-primary me-2"></i>1. Instant Digital Prescriptions</h5>
+                    <p>Immediately following your doctor consultation, digital prescriptions and e-receipts are delivered instantly to your registered patient account and accessible via your phone number.</p>
+
+                    <h5 class="fw-bold text-dark mt-4"><i class="bi bi-box-seam text-primary me-2"></i>2. Diagnostic Reports & Lab Samples</h5>
+                    <p>For home sample collection through our partner hospitals within Dhaka Metropolitan, sample collection kits are dispatched within 2 hours of booking.</p>
+
+                    <h5 class="fw-bold text-dark mt-4"><i class="bi bi-clock-history text-primary me-2"></i>3. Delivery Timeline & Fees</h5>
+                    <p>Digital medical reports are updated on the portal in real-time. Physical medicine delivery requests via partner pharmacies are delivered within 4 to 12 hours inside Dhaka city with standard courier fees.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

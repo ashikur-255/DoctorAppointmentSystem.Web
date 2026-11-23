@@ -1,4 +1,4 @@
-@model IPagedList<DoctorAppointmentSystem.Web.Models.Appointment>
+﻿@model IPagedList<DoctorAppointmentSystem.Web.Models.Appointment>
 
 @{
     ViewBag.Title = "Appointments";
@@ -13,7 +13,7 @@
                 <i class="bi bi-calendar-check"></i> Appointment Management
             </h3>
             <a href="@Url.Action("Create")" class="btn btn-light btn-lg">
-                <i class="bi bi-plus-circle"></i> ? New Appointment
+                <i class="bi bi-plus-circle-fill me-1"></i> New Appointment
             </a>
         </div>
     </div>
@@ -84,31 +84,31 @@
 
     $(document).ready(function () {
 
-        // ?? SEARCH
+        // SEARCH
         $("#searchInput").on("keyup", function () {
             loadAppointments();
         });
 
-        // ?? FILTER
+        // FILTER
         $("#statusFilter").on("change", function () {
             loadAppointments();
         });
 
-        // ?? RESET
+        // RESET
         $("#resetBtn").click(function () {
             $("#searchInput").val('');
             $("#statusFilter").val('');
             loadAppointments();
         });
 
-        // ?? PAGINATION
+        // PAGINATION
         $(document).on("click", ".page-link", function (e) {
             e.preventDefault();
             var page = $(this).data("page");
             loadAppointments(page);
         });
 
-        // ?? SORT
+        // SORT
         $(document).on("click", ".sort-link", function (e) {
             e.preventDefault();
             var sortOrder = $(this).data("sort");

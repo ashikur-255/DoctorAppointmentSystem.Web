@@ -78,35 +78,25 @@
                 </dl>
 
                 <!-- Buttons -->
-                <div class="mt-4">
+                <div class="mt-4 d-flex align-items-center gap-2 flex-wrap">
 
                     <!-- Book Appointment Button -->
-                    @Html.ActionLink(
-                        "Book Now",
-                        "Create",
-                        "Appointments",
-                        new { doctorId = Model.Id },
-                        new { @class = "btn btn-success me-2" }
-                    )
+                    <a asp-controller="Appointments" asp-action="Create" asp-route-doctorId="@Model.Id" class="btn btn-success px-3 shadow-sm">
+                        <i class="bi bi-calendar-check me-1"></i> Book Now
+                    </a>
 
                     <!-- Edit Button Only Admin -->
                     @if (User.IsInRole("Admin"))
                     {
-                        @Html.ActionLink(
-                            "Edit",
-                            "Edit",
-                            new { id = Model.Id },
-                            new { @class = "btn btn-warning me-2" }
-                        )
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning px-3 shadow-sm">
+                            <i class="bi bi-pencil-square me-1"></i> Edit
+                        </a>
                     }
 
                     <!-- Back Button -->
-                    @Html.ActionLink(
-                        "Back to List",
-                        "Index",
-                        null,
-                        new { @class = "btn btn-secondary" }
-                    )
+                    <a asp-action="Index" class="btn btn-outline-secondary px-3 shadow-sm">
+                        <i class="bi bi-arrow-left me-1"></i> Back to List
+                    </a>
 
                 </div>
 

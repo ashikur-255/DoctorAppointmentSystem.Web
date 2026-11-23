@@ -66,9 +66,13 @@
                 </div>
 
                 <!-- Submit Buttons -->
-                <div class="d-flex justify-content-start mt-4">
-                    <input type="submit" value="Add Patient" class="btn btn-success me-2" />
-                    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
+                <div class="d-flex justify-content-start align-items-center gap-2 mt-4">
+                    <button type="submit" class="btn btn-success px-4 shadow-sm fw-semibold">
+                        <i class="bi bi-person-plus-fill me-1"></i> Add Patient
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary px-3 shadow-sm">
+                        <i class="bi bi-arrow-left me-1"></i> Back to List
+                    </a>
                 </div>
             }
         </div>

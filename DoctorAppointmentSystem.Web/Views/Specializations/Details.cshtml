@@ -15,9 +15,13 @@
                 <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
             </dl>
 
-            <div class="d-flex justify-content-start mt-3">
-                @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning me-2" })
-                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
+            <div class="d-flex justify-content-start align-items-center gap-2 mt-3">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning px-3 shadow-sm">
+                    <i class="bi bi-pencil-square me-1"></i> Edit
+                </a>
+                <a asp-action="Index" class="btn btn-outline-secondary px-3 shadow-sm">
+                    <i class="bi bi-arrow-left me-1"></i> Back to List
+                </a>
             </div>
         </div>
     </div>

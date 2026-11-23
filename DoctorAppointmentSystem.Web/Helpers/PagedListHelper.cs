@@ -76,30 +76,30 @@ namespace DoctorAppointmentSystem.Web.Helpers
             if (list == null || list.PageCount <= 1) return HtmlString.Empty;
 
             var sb = new StringBuilder();
-            sb.Append("<nav aria-label='Page navigation'><ul class='pagination justify-content-center mt-3'>");
+            sb.Append("<nav aria-label='Page navigation'><ul class='pagination justify-content-center mt-3 shadow-sm'>");
 
             if (list.HasPreviousPage)
             {
-                sb.Append($"<li class='page-item'><a class='page-link' href='{generatePageUrl(list.PageNumber - 1)}'>&laquo; Previous</a></li>");
+                sb.Append($"<li class='page-item'><a class='page-link' href='{generatePageUrl(list.PageNumber - 1)}'><i class='bi bi-chevron-left me-1'></i>Previous</a></li>");
             }
             else
             {
-                sb.Append("<li class='page-item disabled'><span class='page-link'>&laquo; Previous</span></li>");
+                sb.Append("<li class='page-item disabled'><span class='page-link'><i class='bi bi-chevron-left me-1'></i>Previous</span></li>");
             }
 
             for (int i = 1; i <= list.PageCount; i++)
             {
-                string active = i == list.PageNumber ? " active" : "";
+                string active = i == list.PageNumber ? " active fw-bold" : "";
                 sb.Append($"<li class='page-item{active}'><a class='page-link' href='{generatePageUrl(i)}'>{i}</a></li>");
             }
 
             if (list.HasNextPage)
             {
-                sb.Append($"<li class='page-item'><a class='page-link' href='{generatePageUrl(list.PageNumber + 1)}'>Next &raquo;</a></li>");
+                sb.Append($"<li class='page-item'><a class='page-link' href='{generatePageUrl(list.PageNumber + 1)}'>Next<i class='bi bi-chevron-right ms-1'></i></a></li>");
             }
             else
             {
-                sb.Append("<li class='page-item disabled'><span class='page-link'>Next &raquo;</span></li>");
+                sb.Append("<li class='page-item disabled'><span class='page-link'>Next<i class='bi bi-chevron-right ms-1'></i></span></li>");
             }
 
             sb.Append("</ul></nav>");

@@ -1,4 +1,4 @@
-@model IPagedList<DoctorAppointmentSystem.Web.Models.Specialization>
+﻿@model IPagedList<DoctorAppointmentSystem.Web.Models.Specialization>
 ;
 
 @{
@@ -23,7 +23,7 @@
             </div>
 
             <a href="@Url.Action("Create","Specializations")" class="btn btn-light">
-                <i class="bi bi-plus-circle"></i> ? Add Specialization
+                <i class="bi bi-plus-circle-fill me-1"></i> Add Specialization
             </a>
 
         </div>
@@ -165,12 +165,12 @@
         {
             <a href="@Url.Action("Index", new { page = Model.PageNumber - 1 })"
                class="btn btn-outline-primary me-2">
-                ? Previous
+                <i class="bi bi-chevron-left me-1"></i>Previous
             </a>
         }
         else
         {
-            <span class="btn btn-outline-secondary disabled me-2">? Previous</span>
+            <span class="btn btn-outline-secondary disabled me-2"><i class="bi bi-chevron-left me-1"></i>Previous</span>
         }
 
         <span class="fw-bold mx-2">
@@ -181,12 +181,12 @@
         {
             <a href="@Url.Action("Index", new { page = Model.PageNumber + 1 })"
                class="btn btn-outline-primary ms-2">
-                Next ?
+                Next<i class="bi bi-chevron-right ms-1"></i>
             </a>
         }
         else
         {
-            <span class="btn btn-outline-secondary disabled ms-2">Next ?</span>
+            <span class="btn btn-outline-secondary disabled ms-2">Next<i class="bi bi-chevron-right ms-1"></i></span>
         }
 
     </div>

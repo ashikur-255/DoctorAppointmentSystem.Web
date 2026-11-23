@@ -1,0 +1,84 @@
+@{
+    ViewBag.Title = "Frequently Asked Questions (FAQ)";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">FAQ</li>
+                </ol>
+            </nav>
+
+            <div class="card shadow-sm border-0 rounded-4 p-4 p-md-5">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-circle me-3">
+                        <i class="bi bi-question-circle-fill fs-2"></i>
+                    </div>
+                    <div>
+                        <h2 class="fw-bold mb-1">Frequently Asked Questions</h2>
+                        <p class="text-muted mb-0">Answers to common questions about doctor appointments</p>
+                    </div>
+                </div>
+
+                <hr class="my-4 text-muted" />
+
+                <div class="accordion accordion-flush" id="faqAccordion">
+                    <div class="accordion-item border rounded-3 mb-3">
+                        <h2 class="accordion-header" id="faqHead1">
+                            <button class="accordion-button fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1">
+                                <i class="bi bi-calendar-plus text-primary me-2"></i> How do I book an appointment with a specialist?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" aria-labelledby="faqHead1" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-secondary">
+                                Simply navigate to the <strong>Doctors</strong> page, select your preferred doctor or specialization, click <strong>Book Appointment</strong>, enter your contact phone number, and choose your preferred available date.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border rounded-3 mb-3">
+                        <h2 class="accordion-header" id="faqHead2">
+                            <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
+                                <i class="bi bi-credit-card text-success me-2"></i> What payment methods do you accept?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" aria-labelledby="faqHead2" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-secondary">
+                                We accept <strong>bKash</strong>, <strong>Nagad</strong>, <strong>Mastercard / Visa Cards</strong>, as well as <strong>Cash on Chamber</strong> when you visit the doctor.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border rounded-3 mb-3">
+                        <h2 class="accordion-header" id="faqHead3">
+                            <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
+                                <i class="bi bi-phone text-info me-2"></i> Do I need an email to create an account?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" aria-labelledby="faqHead3" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-secondary">
+                                No! In our system, patients can register and log in conveniently using their 11-digit Bangladeshi mobile phone number (01XXXXXXXXX).
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border rounded-3 mb-3">
+                        <h2 class="accordion-header" id="faqHead4">
+                            <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
+                                <i class="bi bi-person-badge text-warning me-2"></i> How do doctors access their portal?
+                            </button>
+                        </h2>
+                        <div id="faq4" class="accordion-collapse collapse" aria-labelledby="faqHead4" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-secondary">
+                                Doctors can log in using their credentials and registration number to manage their daily queue, mark visited patients, and review appointment histories.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

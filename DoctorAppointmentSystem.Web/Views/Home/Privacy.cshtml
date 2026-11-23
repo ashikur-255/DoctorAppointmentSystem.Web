@@ -1,6 +1,47 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewBag.Title = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Privacy Policy</li>
+                </ol>
+            </nav>
+
+            <div class="card shadow-sm border-0 rounded-4 p-4 p-md-5">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-circle me-3">
+                        <i class="bi bi-shield-lock-fill fs-2"></i>
+                    </div>
+                    <div>
+                        <h2 class="fw-bold mb-1">Privacy Policy</h2>
+                        <p class="text-muted mb-0">Last updated: November 2026</p>
+                    </div>
+                </div>
+
+                <hr class="my-4 text-muted" />
+
+                <div class="content text-secondary lh-lg">
+                    <h5 class="fw-bold text-dark"><i class="bi bi-person-badge text-primary me-2"></i>1. Information We Collect</h5>
+                    <p>We collect essential personal information when you register or book an appointment, including your name, contact phone number, email address, age, gender, and relevant medical symptoms or notes for the doctor.</p>
+
+                    <h5 class="fw-bold text-dark mt-4"><i class="bi bi-activity text-primary me-2"></i>2. How We Use Your Information</h5>
+                    <p>Your information is used solely to facilitate appointment booking, maintain patient medical records, verify doctor availability, and communicate status updates or reminders via phone/SMS/email.</p>
+
+                    <h5 class="fw-bold text-dark mt-4"><i class="bi bi-lock text-primary me-2"></i>3. Medical Confidentiality & Security</h5>
+                    <p>All sensitive health data and consultation histories are strictly confidential between you and your attending specialist. We employ industry-standard encryption and firewall protocols to safeguard your records.</p>
+
+                    <h5 class="fw-bold text-dark mt-4"><i class="bi bi-share text-primary me-2"></i>4. Third-Party Sharing</h5>
+                    <p>We do not sell, trade, or rent personal identification information to any outside parties or marketing entities.</p>
+
+                    <h5 class="fw-bold text-dark mt-4"><i class="bi bi-envelope-at text-primary me-2"></i>5. Contact Us</h5>
+                    <p>For questions or concerns regarding our privacy practices, contact us at <strong>ashikurr255@gmail.com</strong> or call <strong>+880 1708588330</strong>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

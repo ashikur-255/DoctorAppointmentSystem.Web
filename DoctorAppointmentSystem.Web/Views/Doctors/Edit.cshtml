@@ -124,9 +124,13 @@
                 </div>
 
                 <!-- Buttons -->
-                <div class="d-flex justify-content-start">
-                    <input type="submit" value="Save Changes" class="btn btn-warning me-2" />
-                    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
+                <div class="d-flex justify-content-start align-items-center gap-2 mt-4">
+                    <button type="submit" class="btn btn-warning px-4 shadow-sm fw-semibold">
+                        <i class="bi bi-check2-circle me-1"></i> Save Changes
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary px-3 shadow-sm">
+                        <i class="bi bi-arrow-left me-1"></i> Back to List
+                    </a>
                 </div>
             }
         </div>

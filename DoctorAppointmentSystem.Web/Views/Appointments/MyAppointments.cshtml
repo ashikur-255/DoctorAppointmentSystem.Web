@@ -1,4 +1,4 @@
-@model IPagedList<DoctorAppointmentSystem.Web.Models.Appointment>
+﻿@model IPagedList<DoctorAppointmentSystem.Web.Models.Appointment>
 
 @{
     ViewBag.Title = "My Appointments";
@@ -9,7 +9,7 @@
     <div class="card shadow-lg border-0 mb-4">
         <div class="card-body bg-success text-white rounded">
             <h3 class="mb-0">
-                ?? My Appointment History
+                <i class="bi bi-clock-history me-2"></i>My Appointment History
             </h3>
         </div>
     </div>
@@ -55,7 +55,7 @@
                     {
                         <tr>
                             <td colspan="4" class="text-danger p-4">
-                                ?? No appointments found
+                                No appointments found
                             </td>
                         </tr>
                     }
