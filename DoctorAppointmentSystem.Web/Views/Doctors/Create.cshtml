@@ -108,22 +108,16 @@
                     <div class="col-sm-10">
                         <input type="file" id="doctorImageInput" name="imageFile" class="form-control mb-2" accept="image/*" />
                         <div class="d-flex align-items-center gap-3 mt-2">
-                            <div class="position-relative">
+                            <div class="position-relative d-inline-block">
                                 <img id="doctorImagePreview"
                                      src="/Images/Doctors/default.png"
                                      class="img-thumbnail rounded shadow-sm border-2"
                                      style="height:120px;width:120px;object-fit:cover;"
                                      alt="Doctor Photo Preview"
                                      onerror="this.onerror=null;this.src='/Images/Doctors/default.png';" />
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" id="previewBadge" style="display:none;">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success shadow-sm" id="previewBadge" style="display:none;">
                                     <i class="bi bi-check2"></i> Selected
                                 </span>
-                            </div>
-                            <div>
-                                <div id="previewHelpText" class="text-muted small">
-                                    <i class="bi bi-info-circle me-1"></i>Select an image file to see an instant live preview.
-                                </div>
-                                <small class="text-secondary d-block mt-1">Photo will be saved to database when you click <b>Create Doctor</b>.</small>
                             </div>
                         </div>
                     </div>

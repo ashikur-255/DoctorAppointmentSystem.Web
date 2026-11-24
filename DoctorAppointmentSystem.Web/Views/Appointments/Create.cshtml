@@ -63,48 +63,48 @@
 
                 <!-- DOCTOR CARD -->
                 <div id="doctorDetails" class="doctor-premium-card mb-5" style="display:none;">
-                    <div class="row align-items-center g-4">
-                        <div class="col-md-3 text-center">
+                    <div class="row align-items-center g-3">
+                        <div class="col-12 col-md-3 text-center mb-2 mb-md-0">
                             <div class="doctor-img-wrapper">
-                                <img id="doctorImage" class="doctor-img" src="~/Images/Doctors/default.png" />
+                                <img id="doctorImage" class="doctor-img" src="~/Images/Doctors/default.png" alt="Doctor Photo" onerror="this.onerror=null;this.src='/Images/Doctors/default.png';" />
                             </div>
                         </div>
-                        <div class="col-md-9">
-                            <h4 id="doctorName" class="fw-bold text-gradient mb-2"></h4>
-                            <div class="row g-3">
-                                <div class="col-md-6">
+                        <div class="col-12 col-md-9 text-center text-md-start">
+                            <h4 id="doctorName" class="fw-bold text-primary mb-3"></h4>
+                            <div class="row g-2 g-md-3">
+                                <div class="col-6 col-md-6">
                                     <div class="info-box">
-                                        <i class="bi bi-briefcase"></i>
+                                        <i class="bi bi-briefcase text-primary fs-4"></i>
                                         <div>
-                                            <small>Specialization</small>
-                                            <p id="doctorSpecialization"></p>
+                                            <small class="text-muted fw-semibold">Specialization</small>
+                                            <p id="doctorSpecialization" class="fw-bold text-dark mb-0"></p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-6 col-md-6">
                                     <div class="info-box">
-                                        <i class="bi bi-mortarboard"></i>
+                                        <i class="bi bi-mortarboard text-info fs-4"></i>
                                         <div>
-                                            <small>Degree</small>
-                                            <p id="doctorDegree"></p>
+                                            <small class="text-muted fw-semibold">Degree</small>
+                                            <p id="doctorDegree" class="fw-bold text-dark mb-0"></p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-6 col-md-6">
                                     <div class="info-box">
-                                        <i class="bi bi-award"></i>
+                                        <i class="bi bi-award text-warning fs-4"></i>
                                         <div>
-                                            <small>Experience</small>
-                                            <p id="doctorExperience"></p>
+                                            <small class="text-muted fw-semibold">Experience</small>
+                                            <p id="doctorExperience" class="fw-bold text-dark mb-0"></p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-6 col-md-6">
                                     <div class="info-box highlight">
-                                        <i class="bi bi-cash-coin"></i>
+                                        <i class="bi bi-cash-coin fs-4 text-warning"></i>
                                         <div>
-                                            <small>Consultation Fee</small>
-                                            <p id="doctorFee"></p>
+                                            <small class="fw-semibold text-white-50">Consultation Fee</small>
+                                            <p id="doctorFee" class="fw-bold mb-0 text-white fs-5"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -191,31 +191,54 @@
 </div>
 
 @section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
 
     <script>
         // ==============================
-        // LOAD DOCTOR DETAILS
+        // LOAD DOCTOR DETAILS (DESKTOP & MOBILE)
         // ==============================
-        $('#doctorSelect').change(function () {
-            var doctorId = $(this).val();
+        function loadDoctorDetails(doctorId) {
+            if (!doctorId) {
+                doctorId = $('#doctorSelect').val();
+            }
             if (doctorId) {
-                $.get('@Url.Action("GetDoctorDetails","Appointments")', { doctorId: doctorId }, function (data) {
-                    if (data.success) {
-                        $('#doctorDetails').fadeIn();
-                        $('#doctorName').text(data.name);
-                        $('#doctorSpecialization').text(data.specialization);
-                        $('#doctorExperience').text(data.experience);
-                        $('#doctorFee').text(data.fee);
-                        $('#doctorImage').attr('src', data.imagePath);
-                        $('#doctorDegree').text(data.degree); // ? added
+                $.ajax({
+                    url: '@Url.Action("GetDoctorDetails", "Appointments")',
+                    type: 'GET',
+                    data: { doctorId: doctorId },
+                    cache: false,
+                    success: function (data) {
+                        if (data && data.success) {
+                            $('#doctorName').text(data.name);
+                            $('#doctorSpecialization').text(data.specialization || 'General');
+                            $('#doctorExperience').text(data.experience || 'N/A');
+                            $('#doctorFee').text(data.fee || 'N/A');
+                            $('#doctorDegree').text(data.degree || 'N/A');
+                            if (data.imagePath) {
+                                $('#doctorImage').attr('src', data.imagePath);
+                            }
+                            $('#doctorDetails').slideDown(250);
+                        } else {
+                            $('#doctorDetails').slideUp(200);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Failed to load doctor details:', error);
                     }
                 });
             } else {
-                $('#doctorDetails').hide();
+                $('#doctorDetails').slideUp(200);
             }
+        }
+
+        // Bind change and input for all devices (including mobile touch / selects)
+        $(document).on('change input', '#doctorSelect', function () {
+            loadDoctorDetails($(this).val());
+        });
+
+        // Trigger on load (essential when opened with ?doctorId=X)
+        $(document).ready(function () {
+            loadDoctorDetails();
         });
 
         // ==============================
@@ -282,29 +305,37 @@
     }
 
     .doctor-premium-card {
-        background: linear-gradient(135deg,#f8f9ff,#eef2ff);
+        background: linear-gradient(135deg, #f8faff 0%, #eef4ff 100%);
+        border: 1px solid #dbeafe;
         border-radius: 18px;
-        padding: 25px;
+        padding: 20px;
+        box-shadow: 0 8px 24px -4px rgba(59, 130, 246, 0.12);
     }
 
     .doctor-img {
-        width: 120px;
-        height: 120px;
+        width: 110px;
+        height: 110px;
         border-radius: 50%;
         border: 4px solid #fff;
+        object-fit: cover;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .info-box {
         display: flex;
+        align-items: center;
         gap: 10px;
-        padding: 10px;
+        padding: 10px 12px;
         background: #fff;
-        border-radius: 10px;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.03);
     }
 
         .info-box.highlight {
-            background: #4e73df;
+            background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
             color: #fff;
+            border: none;
         }
 
     .patient-glass-card {

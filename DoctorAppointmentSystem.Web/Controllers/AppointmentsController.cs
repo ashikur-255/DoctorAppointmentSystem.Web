@@ -301,6 +301,7 @@ namespace DoctorAppointmentSystem.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetDoctorDetails(int doctorId)
         {
             var doctor = await _db.Doctors
