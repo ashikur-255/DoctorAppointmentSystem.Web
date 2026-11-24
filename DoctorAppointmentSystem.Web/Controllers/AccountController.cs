@@ -270,6 +270,7 @@ namespace DoctorAppointmentSystem.Web.Controllers
 
         // ACCESS DENIED
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult AccessDenied()
         {
             return View();
