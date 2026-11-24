@@ -22,9 +22,12 @@
                 <small>Manage doctor specialization list</small>
             </div>
 
-            <a href="@Url.Action("Create","Specializations")" class="btn btn-light">
-                <i class="bi bi-plus-circle-fill me-1"></i> Add Specialization
-            </a>
+            @if (User.IsInRole("Admin"))
+            {
+                <a href="@Url.Action("Create","Specializations")" class="btn btn-light">
+                    <i class="bi bi-plus-circle-fill me-1"></i> Add Specialization
+                </a>
+            }
 
         </div>
     </div>
@@ -124,21 +127,27 @@
 
                                     <div class="d-flex justify-content-center gap-2">
 
-                                        <a href="@Url.Action("Edit", new { id = item.Id })"
-                                           class="btn btn-warning btn-sm">
-                                            Edit
-                                        </a>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <a href="@Url.Action("Edit", new { id = item.Id })"
+                                               class="btn btn-warning btn-sm">
+                                                Edit
+                                            </a>
+                                        }
 
                                         <a href="@Url.Action("Details", new { id = item.Id })"
                                            class="btn btn-info btn-sm text-white">
                                             Details
                                         </a>
 
-                                        <a href="@Url.Action("Delete", new { id = item.Id })"
-                                           class="btn btn-danger btn-sm"
-                                           onclick="return confirm('Delete this specialization?')">
-                                            Delete
-                                        </a>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <a href="@Url.Action("Delete", new { id = item.Id })"
+                                               class="btn btn-danger btn-sm"
+                                               onclick="return confirm('Delete this specialization?')">
+                                                Delete
+                                            </a>
+                                        }
 
                                     </div>
 

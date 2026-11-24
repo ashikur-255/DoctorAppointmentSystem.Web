@@ -165,6 +165,20 @@ using (var scope = app.Services.CreateScope())
             }
         }
 
+        // Ensure Ashikur Rahman has Admin role
+        var allRegisteredUsers = userManager.Users.ToList();
+        foreach (var u in allRegisteredUsers)
+        {
+            if ((u.Email != null && u.Email.Contains("ashikur", StringComparison.OrdinalIgnoreCase)) ||
+                (u.UserName != null && u.UserName.Contains("ashikur", StringComparison.OrdinalIgnoreCase)))
+            {
+                if (!userManager.IsInRoleAsync(u, "Admin").GetAwaiter().GetResult())
+                {
+                    userManager.AddToRoleAsync(u, "Admin").GetAwaiter().GetResult();
+                }
+            }
+        }
+
         // One-time fix to resolve existing duplicate doctor photos and ensure distinct images
         try
         {
