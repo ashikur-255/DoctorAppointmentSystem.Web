@@ -35,9 +35,12 @@
 
                 <!-- Consultation Fee -->
                 <div class="mb-3 row">
-                    @Html.LabelFor(model => model.ConsultationFee, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <label class="col-sm-2 col-form-label fw-semibold">Consultation Fee (৳)</label>
                     <div class="col-sm-10">
-                        @Html.EditorFor(model => model.ConsultationFee, new { htmlAttributes = new { @class = "form-control" } })
+                        <div class="input-group">
+                            <span class="input-group-text fw-bold">৳</span>
+                            @Html.EditorFor(model => model.ConsultationFee, new { htmlAttributes = new { @class = "form-control", placeholder = "e.g. 1000.00" } })
+                        </div>
                         @Html.ValidationMessageFor(model => model.ConsultationFee, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -101,9 +104,28 @@
 
                 <!-- Upload Photo -->
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Upload Photo</label>
+                    <label class="col-sm-2 col-form-label fw-semibold">Upload Photo</label>
                     <div class="col-sm-10">
-                        <input type="file" name="imageFile" class="form-control" />
+                        <input type="file" id="doctorImageInput" name="imageFile" class="form-control mb-2" accept="image/*" />
+                        <div class="d-flex align-items-center gap-3 mt-2">
+                            <div class="position-relative">
+                                <img id="doctorImagePreview"
+                                     src="/Images/Doctors/default.png"
+                                     class="img-thumbnail rounded shadow-sm border-2"
+                                     style="height:120px;width:120px;object-fit:cover;"
+                                     alt="Doctor Photo Preview"
+                                     onerror="this.onerror=null;this.src='/Images/Doctors/default.png';" />
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" id="previewBadge" style="display:none;">
+                                    <i class="bi bi-check2"></i> Selected
+                                </span>
+                            </div>
+                            <div>
+                                <div id="previewHelpText" class="text-muted small">
+                                    <i class="bi bi-info-circle me-1"></i>Select an image file to see an instant live preview.
+                                </div>
+                                <small class="text-secondary d-block mt-1">Photo will be saved to database when you click <b>Create Doctor</b>.</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -132,4 +154,34 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            const imageInput = document.getElementById('doctorImageInput');
+            const imagePreview = document.getElementById('doctorImagePreview');
+            const previewBadge = document.getElementById('previewBadge');
+            const previewHelp = document.getElementById('previewHelpText');
+
+            if (imageInput && imagePreview) {
+                imageInput.addEventListener('change', function (e) {
+                    const file = e.target.files && e.target.files[0];
+                    if (file) {
+                        if (!file.type.startsWith('image/')) {
+                            alert('Please select a valid image file (PNG, JPG, JPEG, WEBP).');
+                            imageInput.value = '';
+                            return;
+                        }
+                        const reader = new FileReader();
+                        reader.onload = function (event) {
+                            imagePreview.src = event.target.result;
+                            if (previewBadge) previewBadge.style.display = 'inline-block';
+                            if (previewHelp) {
+                                previewHelp.innerHTML = '<span class="text-success fw-bold"><i class="bi bi-check-circle-fill me-1"></i>Photo selected: ' + file.name + '</span>';
+                            }
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+        })();
+    </script>
 }

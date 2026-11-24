@@ -15,7 +15,7 @@
     <p class="text-muted">@(Model.Specialization?.Name ?? "No Specialization")</p>
 
     <!-- Consultation Fee (Optional) -->
-    <p class="text-success fw-bold">$@Model.ConsultationFee.ToString("F2")</p>
+    <p class="text-success fw-bold">৳ @Model.ConsultationFee.ToString("N2")</p>
 
     <!-- Book Appointment Button -->
     <a href="/Appointments/Create?doctorId=@Model.Id" class="btn btn-success">

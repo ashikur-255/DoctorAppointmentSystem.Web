@@ -118,7 +118,8 @@ namespace DoctorAppointmentSystem.Web.Controllers
             {
                 if (imageFile != null && imageFile.Length > 0)
                 {
-                    string folder = Path.Combine(_env.WebRootPath, "Images", "Doctors");
+                    string webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                    string folder = Path.Combine(webRoot, "Images", "Doctors");
                     if (!Directory.Exists(folder))
                         Directory.CreateDirectory(folder);
 
@@ -179,7 +180,8 @@ namespace DoctorAppointmentSystem.Web.Controllers
 
                 if (imageFile != null && imageFile.Length > 0)
                 {
-                    string folder = Path.Combine(_env.WebRootPath, "Images", "Doctors");
+                    string webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                    string folder = Path.Combine(webRoot, "Images", "Doctors");
                     if (!Directory.Exists(folder))
                         Directory.CreateDirectory(folder);
 

@@ -3,6 +3,13 @@ using DoctorAppointmentSystem.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+// Configure global culture to use Bangladeshi Taka (৳) currency symbol
+var cultureInfo = new System.Globalization.CultureInfo("en-US");
+cultureInfo.NumberFormat.CurrencySymbol = "৳ ";
+cultureInfo.NumberFormat.CurrencyPositivePattern = 0; // ৳ 1,000.00
+System.Globalization.CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

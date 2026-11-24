@@ -109,13 +109,16 @@
 
                 <!-- AMOUNT (FIXED) -->
                 <div class="mb-4">
-                    <label class="fw-bold">Amount (BDT)</label>
-                    <input type="text"
-                           name="Amount"
-                           id="amountField"
-                           value="@Model.Amount"
-                           class="form-control"
-                           readonly />
+                    <label class="fw-bold">Amount (৳ BDT)</label>
+                    <div class="input-group">
+                        <span class="input-group-text fw-bold">৳</span>
+                        <input type="text"
+                               name="Amount"
+                               id="amountField"
+                               value="@Model.Amount"
+                               class="form-control fw-bold fs-5 text-success"
+                               readonly />
+                    </div>
                 </div>
 
                 <!-- SUBMIT -->

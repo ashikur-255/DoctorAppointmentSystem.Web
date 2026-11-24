@@ -318,7 +318,7 @@ namespace DoctorAppointmentSystem.Web.Controllers
                 name = doctor.Name,
                 specialization = doctor.Specialization != null ? doctor.Specialization.Name : "",
                 experience = doctor.ExperienceYears + " Years",
-                fee = doctor.ConsultationFee.ToString("C"),
+                fee = "৳ " + doctor.ConsultationFee.ToString("N2"),
                 degree = doctor.Degree,
                 imagePath = string.IsNullOrEmpty(doctor.ImagePath)
                     ? Url.Content("~/Images/Doctors/default.png")
