@@ -84,12 +84,23 @@
                                     <i class="bi bi-person-badge"></i>
                                 </span>
 
-                                @Html.TextBox("regNo", null, new
-                                {
-                                    @class = "form-control",
-                                    placeholder = "Enter your Registration Number",
-                                    required = "required"
-                                })
+                                <input type="text"
+                                       id="regNoInput"
+                                       name="regNo"
+                                       class="form-control"
+                                       list="doctorRegList"
+                                       placeholder="Enter or select your Registration Number"
+                                       required />
+
+                                <datalist id="doctorRegList">
+                                    @if (ViewBag.Doctors != null)
+                                    {
+                                        foreach (var doc in ViewBag.Doctors)
+                                        {
+                                            <option value="@doc.RegistrationNo">@doc.Name - @(doc.Specialization != null ? doc.Specialization.Name : "") (@doc.RegistrationNo)</option>
+                                        }
+                                    }
+                                </datalist>
                             </div>
 
                             <div class="invalid-feedback">
@@ -98,13 +109,33 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-submit w-100">
-                            <i class="bi bi-arrow-right-circle"></i> Continue
+                            <i class="bi bi-arrow-right-circle me-1"></i> Continue to Portal
                         </button>
 
                         if (!string.IsNullOrEmpty(ViewBag.Error as string))
                         {
-                            <div class="alert alert-danger mt-3">
-                                @ViewBag.Error
+                            <div class="alert alert-danger mt-3 mb-0">
+                                <i class="bi bi-exclamation-triangle-fill me-1"></i> @ViewBag.Error
+                            </div>
+                        }
+
+                        if (ViewBag.Doctors != null)
+                        {
+                            <div class="mt-4 pt-3 border-top text-start">
+                                <small class="text-muted fw-bold d-block mb-2">
+                                    <i class="bi bi-info-circle me-1"></i> Quick Select by Doctor:
+                                </small>
+                                <div class="d-flex flex-wrap gap-1" style="max-height: 140px; overflow-y: auto;">
+                                    @foreach (var doc in ViewBag.Doctors)
+                                    {
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-primary py-1 px-2"
+                                                style="font-size: 11px; border-radius: 6px;"
+                                                onclick="document.getElementById('regNoInput').value='@doc.RegistrationNo';">
+                                            @doc.Name <span class="badge bg-secondary ms-1">@doc.RegistrationNo</span>
+                                        </button>
+                                    }
+                                </div>
                             </div>
                         }
                     }

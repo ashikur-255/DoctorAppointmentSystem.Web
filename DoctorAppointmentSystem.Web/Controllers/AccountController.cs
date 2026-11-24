@@ -47,24 +47,28 @@ namespace DoctorAppointmentSystem.Web.Controllers
 
             await _signInManager.SignOutAsync();
 
+            var input = model.LoginInput?.Trim();
+            if (string.IsNullOrEmpty(input))
+            {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return View(model);
+            }
+
             ApplicationUser user = null;
 
-            // Check if input looks like BD phone number
-            if (Regex.IsMatch(model.LoginInput, @"^(01[3-9]\d{8})$"))
+            // 1. Find by Email
+            user = await _userManager.FindByEmailAsync(input);
+
+            // 2. Find by UserName
+            if (user == null)
             {
-                user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == model.LoginInput);
-                if (user == null)
-                {
-                    user = await _userManager.FindByNameAsync(model.LoginInput);
-                }
+                user = await _userManager.FindByNameAsync(input);
             }
-            else
+
+            // 3. Find by Phone Number
+            if (user == null)
             {
-                user = await _userManager.FindByEmailAsync(model.LoginInput);
-                if (user == null)
-                {
-                    user = await _userManager.FindByNameAsync(model.LoginInput);
-                }
+                user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == input);
             }
 
             if (user == null)
@@ -115,6 +119,9 @@ namespace DoctorAppointmentSystem.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
+            model.PhoneNumber = model.PhoneNumber?.Trim();
+            model.Email = model.Email?.Trim();
+
             var roleToAssign = string.IsNullOrEmpty(model.Role) ? "User" : model.Role;
 
             if (!await _roleManager.RoleExistsAsync(roleToAssign))
@@ -122,12 +129,31 @@ namespace DoctorAppointmentSystem.Web.Controllers
                 await _roleManager.CreateAsync(new IdentityRole(roleToAssign));
             }
 
+            // Check if phone number is already registered
+            var existingByPhone = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == model.PhoneNumber || u.UserName == model.PhoneNumber);
+            if (existingByPhone != null)
+            {
+                ModelState.AddModelError("PhoneNumber", "This phone number is already registered. Please log in.");
+                return View(model);
+            }
+
+            // Check if email is already registered
+            if (!string.IsNullOrEmpty(model.Email))
+            {
+                var existingByEmail = await _userManager.FindByEmailAsync(model.Email);
+                if (existingByEmail != null)
+                {
+                    ModelState.AddModelError("Email", "This email address is already registered.");
+                    return View(model);
+                }
+            }
+
             var user = new ApplicationUser
             {
                 UserName = model.PhoneNumber,
                 PhoneNumber = model.PhoneNumber,
                 Email = string.IsNullOrEmpty(model.Email)
-                    ? model.PhoneNumber + "@noemail.com"
+                    ? model.PhoneNumber + "@clickebd.xyz"
                     : model.Email,
                 EmailConfirmed = true
             };
@@ -154,6 +180,82 @@ namespace DoctorAppointmentSystem.Web.Controllers
             }
 
             return View(model);
+        }
+
+        // FORGOT PASSWORD (GET)
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        // FORGOT PASSWORD (POST)
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email?.Trim());
+                if (user != null)
+                {
+                    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var callbackUrl = Url.Action("ResetPassword", "Account", new { code = code }, protocol: HttpContext.Request.Scheme);
+                    TempData["ResetLink"] = callbackUrl;
+                }
+                return View("ForgotPasswordConfirmation");
+            }
+            return View(model);
+        }
+
+        // FORGOT PASSWORD CONFIRMATION
+        [AllowAnonymous]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+        // RESET PASSWORD (GET)
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string code = null)
+        {
+            return code == null ? View("Error") : View(new ResetPasswordViewModel { Code = code });
+        }
+
+        // RESET PASSWORD (POST)
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email?.Trim());
+            if (user == null)
+            {
+                return RedirectToAction(nameof(ResetPasswordConfirmation));
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction(nameof(ResetPasswordConfirmation));
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View(model);
+        }
+
+        // RESET PASSWORD CONFIRMATION
+        [AllowAnonymous]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
         }
 
         // LOGOFF (POST)

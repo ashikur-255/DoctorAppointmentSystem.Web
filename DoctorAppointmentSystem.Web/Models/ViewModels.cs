@@ -41,8 +41,7 @@ namespace DoctorAppointmentSystem.Web.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        [Required]
-        public string Role { get; set; }
+        public string Role { get; set; } = "User";
     }
 
     public class ForgotPasswordViewModel

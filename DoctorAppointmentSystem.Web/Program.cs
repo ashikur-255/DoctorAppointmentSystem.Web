@@ -90,6 +90,80 @@ using (var scope = app.Services.CreateScope())
                 userManager.AddToRoleAsync(adminUser, "Admin").GetAwaiter().GetResult();
             }
         }
+        else
+        {
+            if (!userManager.IsInRoleAsync(adminUser, "Admin").GetAwaiter().GetResult())
+            {
+                userManager.AddToRoleAsync(adminUser, "Admin").GetAwaiter().GetResult();
+            }
+            if (!userManager.CheckPasswordAsync(adminUser, "Admin@123").GetAwaiter().GetResult())
+            {
+                var token = userManager.GeneratePasswordResetTokenAsync(adminUser).GetAwaiter().GetResult();
+                userManager.ResetPasswordAsync(adminUser, token, "Admin@123").GetAwaiter().GetResult();
+            }
+        }
+
+        // Seed Doctor user (doctor@gmail.com / Doctor@123)
+        var doctorEmail = "doctor@gmail.com";
+        var doctorUser = userManager.FindByEmailAsync(doctorEmail).GetAwaiter().GetResult();
+        if (doctorUser == null)
+        {
+            doctorUser = new ApplicationUser
+            {
+                UserName = doctorEmail,
+                Email = doctorEmail,
+                EmailConfirmed = true,
+                PhoneNumber = "01722222222"
+            };
+            var createDoctorResult = userManager.CreateAsync(doctorUser, "Doctor@123").GetAwaiter().GetResult();
+            if (createDoctorResult.Succeeded)
+            {
+                userManager.AddToRoleAsync(doctorUser, "Doctor").GetAwaiter().GetResult();
+            }
+        }
+        else
+        {
+            if (!userManager.IsInRoleAsync(doctorUser, "Doctor").GetAwaiter().GetResult())
+            {
+                userManager.AddToRoleAsync(doctorUser, "Doctor").GetAwaiter().GetResult();
+            }
+            if (!userManager.CheckPasswordAsync(doctorUser, "Doctor@123").GetAwaiter().GetResult())
+            {
+                var token = userManager.GeneratePasswordResetTokenAsync(doctorUser).GetAwaiter().GetResult();
+                userManager.ResetPasswordAsync(doctorUser, token, "Doctor@123").GetAwaiter().GetResult();
+            }
+        }
+
+        // Seed Normal User (user@gmail.com / User@123, Phone: 01711111111)
+        var normalUserEmail = "user@gmail.com";
+        var normalUser = userManager.FindByEmailAsync(normalUserEmail).GetAwaiter().GetResult();
+        if (normalUser == null)
+        {
+            normalUser = new ApplicationUser
+            {
+                UserName = "01711111111",
+                Email = normalUserEmail,
+                EmailConfirmed = true,
+                PhoneNumber = "01711111111"
+            };
+            var createUserResult = userManager.CreateAsync(normalUser, "User@123").GetAwaiter().GetResult();
+            if (createUserResult.Succeeded)
+            {
+                userManager.AddToRoleAsync(normalUser, "User").GetAwaiter().GetResult();
+            }
+        }
+        else
+        {
+            if (!userManager.IsInRoleAsync(normalUser, "User").GetAwaiter().GetResult())
+            {
+                userManager.AddToRoleAsync(normalUser, "User").GetAwaiter().GetResult();
+            }
+            if (!userManager.CheckPasswordAsync(normalUser, "User@123").GetAwaiter().GetResult())
+            {
+                var token = userManager.GeneratePasswordResetTokenAsync(normalUser).GetAwaiter().GetResult();
+                userManager.ResetPasswordAsync(normalUser, token, "User@123").GetAwaiter().GetResult();
+            }
+        }
 
         // One-time fix to resolve existing duplicate doctor photos and ensure distinct images
         try

@@ -23,11 +23,9 @@ namespace DoctorAppointmentSystem.Web.Controllers
         }
 
         // STEP 1: ENTER REGISTRATION NO
-        public IActionResult SelectDoctor()
+        public async Task<IActionResult> SelectDoctor()
         {
-            if (HttpContext.Session.GetInt32("DoctorId") != null)
-                return RedirectToAction(nameof(Dashboard));
-
+            ViewBag.Doctors = await _db.Doctors.Include(d => d.Specialization).OrderBy(d => d.Name).ToListAsync();
             return View();
         }
 
@@ -35,17 +33,20 @@ namespace DoctorAppointmentSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SelectDoctor(string regNo)
         {
+            regNo = regNo?.Trim();
             if (string.IsNullOrEmpty(regNo))
             {
                 ViewBag.Error = "Registration Number is required!";
+                ViewBag.Doctors = await _db.Doctors.Include(d => d.Specialization).OrderBy(d => d.Name).ToListAsync();
                 return View();
             }
 
-            var doctor = await _db.Doctors.FirstOrDefaultAsync(d => d.RegistrationNo == regNo);
+            var doctor = await _db.Doctors.FirstOrDefaultAsync(d => d.RegistrationNo.ToLower() == regNo.ToLower());
 
             if (doctor == null)
             {
-                ViewBag.Error = "Invalid Registration Number!";
+                ViewBag.Error = $"Invalid Registration Number '{regNo}'. Please select from the list below.";
+                ViewBag.Doctors = await _db.Doctors.Include(d => d.Specialization).OrderBy(d => d.Name).ToListAsync();
                 return View();
             }
 
@@ -155,7 +156,7 @@ namespace DoctorAppointmentSystem.Web.Controllers
         {
             HttpContext.Session.Clear();
             await _signInManager.SignOutAsync();
-            return RedirectToAction(nameof(SelectDoctor));
+            return RedirectToAction("Login", "Account");
         }
     }
 }
