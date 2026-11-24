@@ -91,54 +91,60 @@ using (var scope = app.Services.CreateScope())
             }
         }
 
-        // Verify and heal doctor image paths
+        // One-time fix to resolve existing duplicate doctor photos and ensure distinct images
         try
         {
-            var doctors = db.Doctors.ToList();
-            var webRoot = app.Environment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-            var doctorImgDir = Path.Combine(webRoot, "Images", "Doctors");
-            if (Directory.Exists(doctorImgDir))
+            bool needsFix = false;
+            var allDoctors = db.Doctors.ToList();
+
+            foreach (var doc in allDoctors)
             {
-                var existingFiles = Directory.GetFiles(doctorImgDir, "*.png")
-                    .Select(Path.GetFileName)
-                    .Where(f => !f.Equals("default.png", StringComparison.OrdinalIgnoreCase))
-                    .ToList();
+                if (string.IsNullOrEmpty(doc.ImagePath)) continue;
+                // NEVER touch any doctor photo uploaded by the admin (Base64 data URI)
+                if (doc.ImagePath.StartsWith("data:", StringComparison.OrdinalIgnoreCase)) continue;
 
-                if (existingFiles.Any())
+                // Fix Dr. Selina Sarkar: must have unique female doctor photo, not male doctor photo
+                if (doc.Name.Contains("Selina", StringComparison.OrdinalIgnoreCase) &&
+                    (doc.ImagePath.Contains("cf5e63ac") || !doc.ImagePath.Contains("745379ff")))
                 {
-                    int imgIdx = 0;
-                    bool updated = false;
-                    foreach (var doctor in doctors)
-                    {
-                        bool fileExists = false;
-                        if (!string.IsNullOrEmpty(doctor.ImagePath))
-                        {
-                            var fn = Path.GetFileName(doctor.ImagePath);
-                            if (File.Exists(Path.Combine(doctorImgDir, fn)))
-                            {
-                                fileExists = true;
-                            }
-                        }
-
-                        if (!fileExists)
-                        {
-                            doctor.ImagePath = "/Images/Doctors/" + existingFiles[imgIdx % existingFiles.Count];
-                            imgIdx++;
-                            updated = true;
-                        }
-                    }
-
-                    if (updated)
-                    {
-                        db.SaveChanges();
-                    }
+                    doc.ImagePath = "/Images/Doctors/745379ff-dc59-45c1-a8cc-993f65eb672d.png";
+                    needsFix = true;
                 }
+
+                // Fix Dr. Sabrina Mostafa: unique female doctor photo
+                if (doc.Name.Contains("Sabrina Mostafa", StringComparison.OrdinalIgnoreCase) &&
+                    (doc.ImagePath.Contains("be68a3a8") || !doc.ImagePath.Contains("0156bed4")))
+                {
+                    doc.ImagePath = "/Images/Doctors/0156bed4-4e2d-405a-9860-8bbcbeb2342b.png";
+                    needsFix = true;
+                }
+
+                // Fix Dr. Md. Asif Masud: unique male doctor photo
+                if (doc.Name.Contains("Asif Masud", StringComparison.OrdinalIgnoreCase) &&
+                    doc.ImagePath.Contains("be68a3a8"))
+                {
+                    doc.ImagePath = "/Images/Doctors/aa8e8e97-dc6f-40d1-8aed-8da8ad56bf92.png";
+                    needsFix = true;
+                }
+
+                // Fix duplicate Dr. Ayubur Rahman: unique male doctor photo
+                if (doc.Name.Contains("Ayubur", StringComparison.OrdinalIgnoreCase) &&
+                    doc.ImagePath.Contains("557a6790"))
+                {
+                    doc.ImagePath = "/Images/Doctors/4c28ae9d-15bd-4a90-a490-fddd3770b21e.png";
+                    needsFix = true;
+                }
+            }
+
+            if (needsFix)
+            {
+                db.SaveChanges();
             }
         }
         catch (Exception ex)
         {
             var logger = services.GetRequiredService<ILogger<Program>>();
-            logger.LogWarning(ex, "Could not verify doctor images.");
+            logger.LogWarning(ex, "Could not apply one-time doctor image fix.");
         }
     }
     catch (Exception ex)

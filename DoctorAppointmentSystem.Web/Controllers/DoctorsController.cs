@@ -118,18 +118,31 @@ namespace DoctorAppointmentSystem.Web.Controllers
             {
                 if (imageFile != null && imageFile.Length > 0)
                 {
-                    string webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                    string folder = Path.Combine(webRoot, "Images", "Doctors");
-                    if (!Directory.Exists(folder))
-                        Directory.CreateDirectory(folder);
-
-                    string fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
-                    string fullPath = Path.Combine(folder, fileName);
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    using (var ms = new MemoryStream())
                     {
-                        await imageFile.CopyToAsync(stream);
+                        await imageFile.CopyToAsync(ms);
+                        var bytes = ms.ToArray();
+                        var base64 = Convert.ToBase64String(bytes);
+                        var contentType = string.IsNullOrEmpty(imageFile.ContentType) ? "image/jpeg" : imageFile.ContentType;
+                        doctor.ImagePath = $"data:{contentType};base64,{base64}";
+
+                        try
+                        {
+                            string webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                            string folder = Path.Combine(webRoot, "Images", "Doctors");
+                            if (!Directory.Exists(folder))
+                                Directory.CreateDirectory(folder);
+
+                            string fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
+                            string fullPath = Path.Combine(folder, fileName);
+                            await System.IO.File.WriteAllBytesAsync(fullPath, bytes);
+                        }
+                        catch { }
                     }
-                    doctor.ImagePath = "/Images/Doctors/" + fileName;
+                }
+                else
+                {
+                    doctor.ImagePath = "/Images/Doctors/default.png";
                 }
 
                 _db.Doctors.Add(doctor);
@@ -180,18 +193,27 @@ namespace DoctorAppointmentSystem.Web.Controllers
 
                 if (imageFile != null && imageFile.Length > 0)
                 {
-                    string webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                    string folder = Path.Combine(webRoot, "Images", "Doctors");
-                    if (!Directory.Exists(folder))
-                        Directory.CreateDirectory(folder);
-
-                    string fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
-                    string fullPath = Path.Combine(folder, fileName);
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    using (var ms = new MemoryStream())
                     {
-                        await imageFile.CopyToAsync(stream);
+                        await imageFile.CopyToAsync(ms);
+                        var bytes = ms.ToArray();
+                        var base64 = Convert.ToBase64String(bytes);
+                        var contentType = string.IsNullOrEmpty(imageFile.ContentType) ? "image/jpeg" : imageFile.ContentType;
+                        existingDoctor.ImagePath = $"data:{contentType};base64,{base64}";
+
+                        try
+                        {
+                            string webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                            string folder = Path.Combine(webRoot, "Images", "Doctors");
+                            if (!Directory.Exists(folder))
+                                Directory.CreateDirectory(folder);
+
+                            string fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
+                            string fullPath = Path.Combine(folder, fileName);
+                            await System.IO.File.WriteAllBytesAsync(fullPath, bytes);
+                        }
+                        catch { }
                     }
-                    existingDoctor.ImagePath = "/Images/Doctors/" + fileName;
                 }
 
                 await _db.SaveChangesAsync();
