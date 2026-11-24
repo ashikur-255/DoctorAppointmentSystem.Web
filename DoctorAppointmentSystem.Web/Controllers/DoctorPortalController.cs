@@ -151,12 +151,12 @@ namespace DoctorAppointmentSystem.Web.Controllers
             return Json(new { success = true });
         }
 
-        // LOGOUT
-        public async Task<IActionResult> Logout()
+        // LOGOUT (SWITCH DOCTOR / CLEAR CURRENT DOCTOR SESSION)
+        public IActionResult Logout()
         {
-            HttpContext.Session.Clear();
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Login", "Account");
+            HttpContext.Session.Remove("DoctorId");
+            HttpContext.Session.Remove("DoctorName");
+            return RedirectToAction(nameof(SelectDoctor));
         }
     }
 }
