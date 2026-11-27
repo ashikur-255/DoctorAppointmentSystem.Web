@@ -259,6 +259,9 @@ app.UseAuthorization();
 
 app.UseSession();
 
+// Health check endpoint for uptime monitors / keep-alive pings (cron-job.org)
+app.MapGet("/health", () => Results.Ok(new { status = "healthy", time = DateTime.UtcNow }));
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
